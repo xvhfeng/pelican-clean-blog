@@ -11,7 +11,7 @@
             <meta name="google-site-verification" content="{{ GOOGLE_SITE_VERIFICATION }}">
         {% endif %}
 
-        <title>{% block title %}{{ SITENAME }}{% if SITESUBTITLE and SHOW_SITESUBTITLE_IN_HTML %} - {{ SITESUBTITLE }}{% endif %}{% endblock title %}</title>
+        <title>{% block title %}{{ SITETITLE }} - {{ SITENAME }}{% if SITESUBTITLE and SHOW_SITESUBTITLE_IN_HTML %} - {{ SITESUBTITLE }}{% endif %}{% endblock title %}</title>
 
     {% for name,link in SOCIAL if name in ['rss', 'rss-square'] %}
         <link href="{{ link }}" type="application/atom+xml" rel="alternate" title="{{ SITENAME }} Full Atom Feed" />
@@ -120,14 +120,18 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{{ SITEURL }}/">{{ SITENAME }}</a>
+                <a class="navbar-brand" href="{{ SITEURL }}/">{{ SITETITLE }}</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     {% for title, link in MENUITEMS %}
+                        {% if  link.split('$')[0] ==  link  %}
                         <li><a href="{{ link }}">{{ title }}</a></li>
+                        {% else %}
+                        <li><a href="{{ link.split('$')[0] }}" target="_blank">{{ title }}</a></li>
+                        {% endif %}
                     {% endfor %}
 
                     {% if DISPLAY_PAGES_ON_MENU %}
@@ -170,14 +174,25 @@
                     <ul class="list-inline text-center">
                     {% if SOCIAL %}
                         {% for name,link in SOCIAL %}
-                            <li>
-                                <a href="{{ link }}">
-                                    <span class="fa-stack fa-lg">
-                                        <i class="fa fa-circle fa-stack-2x"></i>
-                                        <i class="fa fa-{{ name|lower }} fa-stack-1x fa-inverse"></i>
-                                    </span>
-                                </a>
-                            </li>
+                        {% if  link.split('$')[0] ==  link  %}
+                        <li>
+                            <a href="{{ link }}">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-{{ name|lower }} fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        {% else %}
+                        <li>
+                            <a href="{{ link.split('$')[0] }}" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-{{ name|lower }} fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        {% endif %}
                         {% endfor %}
                     {% endif %}
                     </ul>
